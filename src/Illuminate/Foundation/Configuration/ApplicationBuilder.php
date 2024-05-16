@@ -205,6 +205,10 @@ class ApplicationBuilder
             if (is_string($health)) {
                 Route::middleware('web')->get($health, function () {
                     Event::dispatch(new DiagnosingHealth);
+                    
+                    if ($request->wantsJson()) {
+                        return response()->json(['status' => 'health-up']);
+                    }
 
                     return View::file(__DIR__.'/../resources/health-up.blade.php');
                 });
